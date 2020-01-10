@@ -1,0 +1,29 @@
+@startuml
+interface DruidAbstractDataSourceMBean
+interface DataSource
+interface DataSourceProxy
+interface DruidDataSourceMBean
+interface ManagedDataSource
+interface ConnectionPoolDataSource
+interface MBeanRegistration
+abstract class DruidAbstractDataSource
+class DruidDataSource
+
+
+DruidAbstractDataSource .up.|> DruidAbstractDataSourceMBean
+DruidAbstractDataSource .up.|> DataSourceProxy
+DruidAbstractDataSource .up.|> DataSource
+
+DruidDataSourceMBean .up.|> DruidAbstractDataSourceMBean
+
+ManagedDataSource .up.|> DataSource
+
+DruidDataSource .up.|> DruidDataSourceMBean
+DruidDataSource .up.|> MBeanRegistration
+DruidDataSource -up-|> DruidAbstractDataSource
+DruidDataSource .up.|> ManagedDataSource
+DruidDataSource .up.|> ConnectionPoolDataSource
+
+
+
+@enduml

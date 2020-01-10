@@ -1,0 +1,55 @@
+@startuml
+
+interface DataSource
+
+class DruidDataSource{
+        - DruidConnectionHolder[] connections
+        - DruidConnectionHolder[] evictConnections
+        - DruidConnectionHolder[] keepAliveConnections
+        # Map<DruidPooledConnection, Object> activeConnections
+        
+        - CreateConnectionThread createConnectionThread
+        - DestroyConnectionThread destroyConnectionThread
+        - LogStatsThread logStatsThread
+
+        - int poolingCount
+        - int activeCount
+}
+abstract class DruidAbstractDataSource{
+    # List<Filter> filters
+    
+    # ValidConnectionChecker validConnectionChecker
+    # ExceptionSorter exceptionSorter
+    
+    # Condition notEmpty
+    # Condition empty
+}
+
+
+class CreateConnectionThread
+
+class DestroyConnectionThread
+
+class LogStatsThread
+
+class ValidConnectionChecker{
+    + boolean isValidConnection(Connection c, String query, int validationQueryTimeout)
+}
+
+class ExceptionSorter{
+    + boolean isExceptionFatal(SQLException e)
+}
+
+DruidAbstractDataSource .up.|> DataSource
+
+DruidDataSource .up.|> DruidAbstractDataSource
+
+DestroyConnectionThread -left-* DruidDataSource
+CreateConnectionThread -down-* DruidDataSource
+LogStatsThread -right-* DruidDataSource
+
+ValidConnectionChecker -right-* DruidAbstractDataSource
+
+ExceptionSorter -left-* DruidAbstractDataSource
+
+@enduml

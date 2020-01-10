@@ -1,0 +1,30 @@
+@startuml
+
+(*) --> "加载方式一属性"
+note left
+系统属性，
+如-Ddruid.maxActive=8
+end note
+
+-->"加载方式二属性"
+note left
+properties属性，
+如maxActive=8
+end note
+
+-->"加载方式四属性"
+note left
+properties属性，
+如connectionProperties=druid.maxActive=8
+end note
+
+-->"加载方式三属性"
+note left
+properties属性，
+如druid.maxActive=8
+end note
+
+--> (*)
+
+
+@enduml

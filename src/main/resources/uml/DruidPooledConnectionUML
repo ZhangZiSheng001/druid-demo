@@ -1,0 +1,14 @@
+@startuml
+    class DruidPooledConnection {
+        # Connection conn
+        # DruidConnectionHolder holder 
+    }
+    class DruidConnectionHolder {
+        # DruidAbstractDataSource dataSource
+        # Connection conn
+    }
+    class DruidDataSource
+    
+    DruidConnectionHolder -down-* DruidPooledConnection
+    DruidDataSource -down-* DruidConnectionHolder
+@enduml
