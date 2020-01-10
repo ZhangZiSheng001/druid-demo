@@ -392,7 +392,7 @@ maxWait=-1
 
 ### 打开监控统计功能
 
-Druid的监控统计功能是通过`filter-chain`扩展实现，如果你要打开监控统计功能，配置StatFilter，如下：
+druid的监控统计功能是通过`filter-chain`扩展实现，如果你要打开监控统计功能，配置`StatFilter`，如下：
 
 ```properties
 filters=stat
@@ -416,7 +416,7 @@ select * from t where id = 3
 select * from t where id = ?
 ```
 
-可以配置StatFilter的mergeSql属性来解决：
+可以配置`StatFilter`的`mergeSql`属性来解决：
 
 ```properties
 #用于设置filter的属性
@@ -424,13 +424,13 @@ select * from t where id = ?
 connectionProperties=druid.stat.mergeSql=true
 ```
 
-StatFilter支持一种简化配置方式，和上面的配置等同的。如下：
+`StatFilter`支持一种简化配置方式，和上面的配置等同的。如下：
 
 ```properties
 filters=mergeStat
 ```
 
-mergeStat是的MergeStatFilter缩写，我们看MergeStatFilter的实现：
+`mergeStat`是的`MergeStatFilter`缩写，我们看`MergeStatFilter`的实现：
 
 ```java
   public class MergeStatFilter extends StatFilter {
@@ -440,11 +440,11 @@ mergeStat是的MergeStatFilter缩写，我们看MergeStatFilter的实现：
   }
 ```
 
-从实现代码来看，仅仅是一个mergeSql的缺省值。
+从实现代码来看，仅仅是一个`mergeSql`的缺省值。
 
 ### 慢SQL记录
 
-StatFilter属性slowSqlMillis用来配置SQL慢的标准，执行时间超过slowSqlMillis的就是慢。slowSqlMillis的缺省值为3000，也就是3秒。
+`StatFilter`属性`slowSqlMillis`用来配置SQL慢的标准，执行时间超过`slowSqlMillis`的就是慢。`slowSqlMillis`的缺省值为3000，也就是3秒。
 
 ```properties
 connectionProperties=druid.stat.logSlowSql=true;druid.stat.slowSqlMillis=5000
@@ -454,7 +454,7 @@ connectionProperties=druid.stat.logSlowSql=true;druid.stat.slowSqlMillis=5000
 
 ### 合并多个DruidDataSource的监控数据
 
-缺省多个DruidDataSource的监控数据是各自独立的，在Druid-0.2.17版本之后，支持配置公用监控数据，配置参数为useGlobalDataSourceStat。例如：
+缺省多个`DruidDataSource`的监控数据是各自独立的，在druid-0.2.17版本之后，支持配置公用监控数据，配置参数为`useGlobalDataSourceStat`。例如：
 
 ```properties
 connectionProperties=druid.useGlobalDataSourceStat=true
@@ -462,18 +462,18 @@ connectionProperties=druid.useGlobalDataSourceStat=true
 
 ## 配置StatViewServlet
 
-Druid内置提供了一个StatViewServlet用于展示Druid的统计信息。
+druid内置提供了一个`StatViewServlet`用于展示Druid的统计信息。
 
-这个StatViewServlet的用途包括：
+这个`StatViewServlet`的用途包括：
 
 - 提供监控信息展示的html页面
 - 提供监控信息的JSON API
 
-注意：使用StatViewServlet，建议使用druid 0.2.6以上版本。
+注意：使用`StatViewServlet`，建议使用druid 0.2.6以上版本。
 
 ### 配置web.xml
 
-StatViewServlet是一个标准的`javax.servlet.http.HttpServlet`，需要配置在你web应用中的`WEB-INF/web.xml`中。
+`StatViewServlet`是一个标准的`javax.servlet.http.HttpServlet`，需要配置在你web应用中的`WEB-INF/web.xml`中。
 
 ```xml
   <servlet>
@@ -493,7 +493,7 @@ http://localhost:8080/druid-demo/druid/index.html
 
 ### 配置监控页面访问密码
 
-需要配置Servlet的 loginUsername 和 loginPassword这两个初始参数。
+需要配置`Servlet`的 `loginUsername` 和` loginPassword`这两个初始参数。
 
 示例如下:
 
@@ -526,7 +526,7 @@ http://localhost:8080/druid-demo/druid/index.html
 
 ### 配置allow和deny
 
-StatViewSerlvet展示出来的监控信息比较敏感，是系统运行的内部情况，如果你需要做访问控制，可以配置allow和deny这两个参数。比如：
+`StatViewSerlvet`展示出来的监控信息比较敏感，是系统运行的内部情况，如果你需要做访问控制，可以配置`allow`和`deny`这两个参数。比如：
 
 ```xml
   <servlet>
@@ -544,12 +544,12 @@ StatViewSerlvet展示出来的监控信息比较敏感，是系统运行的内�
 ```
 
 判断规则:
-1. deny优先于allow，如果在deny列表中，就算在allow列表中，也会被拒绝。
-2. 如果allow没有配置或者为空，则允许所有访问
+1. `deny`优先于`allow`，如果在`deny`列表中，就算在`allow`列表中，也会被拒绝。
+2. 如果`allow`没有配置或者为空，则允许所有访问
 
 ### 配置resetEnable
 
-在StatViewSerlvet输出的html页面中，有一个功能是Reset All，执行这个操作之后，会导致所有计数器清零，重新计数。你可以通过配置参数关闭它。
+在`StatViewSerlvet`输出的html页面中，有一个功能是`Reset All`，执行这个操作之后，会导致所有计数器清零，重新计数。你可以通过配置参数关闭它。
 
 ```xml
   <servlet>
@@ -564,7 +564,7 @@ StatViewSerlvet展示出来的监控信息比较敏感，是系统运行的内�
 
 ### 配置WebStatFilter
 
-WebStatFilter用于采集web-jdbc关联监控的数据。经常需要排除一些不必要的url，比如*.js,/jslib/*等等。配置在init-param中。比如：
+`WebStatFilter`用于采集`web-jdbc`关联监控的数据。经常需要排除一些不必要的url，比如`.js`,`/jslib/`等等。配置在`init-param`中。比如：
 
 ```xml
   <filter>
@@ -583,7 +583,7 @@ WebStatFilter用于采集web-jdbc关联监控的数据。经常需要排除一�
 
 ## 测试
 
-启动程度，访问http://localhost:8080/druid-demo/druid/index.html，登录后可见以下页面，通过该页面我们可以查看数据源配置参数、进行SQL统计和监控，等等：
+启动程度，访问`http://localhost:8080/druid-demo/druid/index.html`，登录后可见以下页面，通过该页面我们可以查看数据源配置参数、进行SQL统计和监控，等等：
 
 ![druid监控统计页面](https://img2018.cnblogs.com/blog/1731892/202001/1731892-20200110135822853-1710939822.png)
 
@@ -591,14 +591,14 @@ WebStatFilter用于采集web-jdbc关联监控的数据。经常需要排除一�
 
 ## 开启WallFilter
 
-WallFilter用于对SQL进行拦截，通过以下配置开启：
+`WallFilter`用于对SQL进行拦截，通过以下配置开启：
 
 ```properties
 #过滤器
 filters=wall,stat
 ```
 
-注意，这种配置拦截检测的时间不在StatFilter统计的SQL执行时间内。  如果希望StatFilter统计的SQL执行时间内，则使用如下配置 
+注意，这种配置拦截检测的时间不在`StatFilter`统计的SQL执行时间内。  如果希望`StatFilter`统计的SQL执行时间内，则使用如下配置 
 
 ```properties
 #过滤器
@@ -607,7 +607,7 @@ filters=stat,wall
 
 ## WallConfig详细说明
 
-WallFilter常用参数如下，可以通过connectionProperties属性进行配置：
+`WallFilter`常用参数如下，可以通过`connectionProperties`属性进行配置：
 
 | 参数                      | 缺省值 | 描述                                                         |
 | ------------------------- | ------ | ------------------------------------------------------------ |
@@ -626,14 +626,14 @@ WallFilter常用参数如下，可以通过connectionProperties属性进行配�
 
 ## 开启日志记录
 
- Druid内置提供了四种LogFilter（Log4jFilter、Log4j2Filter、CommonsLogFilter、Slf4jLogFilter），用于输出JDBC执行的日志。这些Filter都是Filter-Chain扩展机制中的Filter，所以配置方式可以参考这里： 
+ druid内置提供了四种`LogFilter`（`Log4jFilter`、`Log4j2Filter`、`CommonsLogFilter`、`Slf4jLogFilter`），用于输出JDBC执行的日志。这些`Filter`都是`Filter-Chain`扩展机制中的`Filter`，所以配置方式可以参考这里： 
 
 ```properties
 #过滤器
 filters=log4j
 ```
 
- 在druid-xxx.jar!/META-INF/druid-filter.properties文件中描述了这四种Filter的别名:
+ 在`druid-xxx.jar!/META-INF/druid-filter.properties`文件中描述了这四种Filter的别名:
 
 ```properties
   druid.filters.log4j=com.alibaba.druid.filter.logging.Log4jFilter
@@ -643,7 +643,7 @@ filters=log4j
   druid.filters.commonLogging=com.alibaba.druid.filter.logging.CommonsLogFilter
 ```
 
- 他们的别名分别是log4j、log4j2、slf4j、commonlogging和commonLogging。其中commonlogging和commonLogging只是大小写不同。 
+ 他们的别名分别是`log4j`、`log4j2`、`slf4j`、`commonlogging`和`commonLogging`。其中`commonlogging`和`commonLogging`只是大小写不同。 
 
 ## 配置输出日志
 
@@ -664,7 +664,7 @@ connectionProperties=druid.log.rs=false
 
 ## log4j.properties配置
 
- 如果你使用log4j，可以通过`log4j.properties`文件配置日志输出选项，例如： 
+ 如果你使用`log4j`，可以通过`log4j.properties`文件配置日志输出选项，例如： 
 
 ```properties
   log4j.logger.druid.sql=warn,stdout
@@ -686,7 +686,7 @@ connectionProperties=druid.log.stmt.executableSql=true
 
 ## 配置druid的参数的n种方式
 
-使用druid，同一个参数，我们可以采用多种方式进行配置，举个例子：maxActive（最大连接池参数）的配置：
+使用druid，同一个参数，我们可以采用多种方式进行配置，举个例子：`maxActive`（最大连接池参数）的配置：
 
 ### 方式一(系统属性)
 
@@ -706,7 +706,7 @@ maxActive=8
 
 ### 方式三(properties加前缀)
 
-相比第二种方式，这里只是加了".druid"前缀。
+相比第二种方式，这里只是加了`.druid`前缀。
 
 ```properties
 druid.maxActive=8
@@ -714,7 +714,7 @@ druid.maxActive=8
 
 ### 方式四(properties的connectionProperties)
 
-connectionProperties可以用于配置多个属性，不同属性使用";"隔开。
+`connectionProperties`可以用于配置多个属性，不同属性使用";"隔开。
 
 ```properties
 connectionProperties=druid.maxActive=8
@@ -722,7 +722,7 @@ connectionProperties=druid.maxActive=8
 
 ### 方式五(connectProperties)
 
-connectProperties可以在方式一、方式三和方式四中存在，具体配置如下：
+`connectProperties`可以在方式一、方式三和方式四中存在，具体配置如下：
 
 ```properties
 # 方式一
@@ -741,7 +741,7 @@ connectionProperties=druid.connectProperties=druid.maxActive=8
 druid.connectProperties=druid.connectProperties=druid.connectProperties=druid.connectProperties=druid.maxActive=8
 ```
 
-真的是没完没了，怎么会引入connectProperties这个属性呢？我觉得这是一个十分失败的设计，所以本文仅会讲前面说的四种。
+真的是没完没了，怎么会引入`connectProperties`这个属性呢？我觉得这是一个十分失败的设计，所以本文仅会讲前面说的四种。
 
 ## 关于druid参数配置的吐槽
 
@@ -874,7 +874,7 @@ maxWait=-1
 
 ## 连接检查参数
 
-针对连接失效的问题，建议开启空闲连接测试，而不建议开启借出测试（从性能考虑），另外，开启连接测试时，必须配置validationQuery。
+针对连接失效的问题，建议开启空闲连接测试，而不建议开启借出测试（从性能考虑），另外，开启连接测试时，必须配置`validationQuery`。
 
 ```properties
 #-------------连接检测情况--------------------------------
@@ -1018,8 +1018,8 @@ init=true
 
 看过druid的源码就会发现，相比其他DBCP和C3P0，druid有以下特点：
 
-1. **更多地引入了JDK的特性，特别是concurrent包的工具**。例如，CountDownLatch、ReentrantLock、AtomicLongFieldUpdater、Condition等，也就是说，在分析druid源码之前，最好先学习下这些技术；
-2. **在类的设计上一切从简**。例如，DBCP和C3P0都有一个池的类，而druid并没有，只用了一个简单的数组，且druid的核心逻辑几乎都堆积在DruidDataSource里面。另外，在对类或接口的抽象上，个人感觉，druid不是很“面向对象”，有的接口或类的方法很难统一成某种对象的行为，所以，本文不会去关注类的设计，更多地将分析一些重要功能的实现。
+1. **更多地引入了JDK的特性，特别是concurrent包的工具**。例如，`CountDownLatch`、`ReentrantLock`、`AtomicLongFieldUpdater`、`Condition`等，也就是说，在分析druid源码之前，最好先学习下这些技术；
+2. **在类的设计上一切从简**。例如，DBCP和C3P0都有一个池的类，而druid并没有，只用了一个简单的数组，且druid的核心逻辑几乎都堆积在`DruidDataSource`里面。另外，在对类或接口的抽象上，个人感觉，druid不是很“面向对象”，有的接口或类的方法很难统一成某种对象的行为，所以，本文不会去关注类的设计，更多地将分析一些重要功能的实现。
 
  注意：考虑篇幅和可读性，以下代码经过删减，仅保留所需部分。 
 
@@ -1027,7 +1027,7 @@ init=true
 
 前面已经讲过，druid为我们提供了“无数”种方式来配置参数，这里我再补充下不同配置方式的加载顺序（当然，只会涉及到四种方式）。
 
-当我们使用调用DruidDataSourceFactory.createDataSource(Properties)时，会加载配置来给对应的属性赋值，另外，这个过程还会根据配置去创建对应的过滤器。不同配置方式加载时机不同，后者会覆盖已存在的相同参数，如图所示。
+当我们使用调用`DruidDataSourceFactory.createDataSource(Properties)`时，会加载配置来给对应的属性赋值，另外，这个过程还会根据配置去创建对应的过滤器。不同配置方式加载时机不同，后者会覆盖已存在的相同参数，如图所示。
 
 <img src="https://img2018.cnblogs.com/blog/1731892/202001/1731892-20200110135916270-964950053.png" alt="druid不同配置方式的加载顺序" style="zoom:80%;" />
 
@@ -1035,7 +1035,7 @@ init=true
 
 ### 了解下DruidDataSource这个类
 
-这里先来介绍下DruidDataSource这个类：
+这里先来介绍下`DruidDataSource`这个类：
 
 ![DruidDataSource的UML图](https://img2018.cnblogs.com/blog/1731892/202001/1731892-20200110135950740-150499095.png)
 
@@ -1060,25 +1060,25 @@ init=true
 
 ### 概括下初始化的过程
 
-DruidDataSource的初始化时机是可选的，当我们设置`init=true`时，在createDataSource时就会调用`DataSource.init()`方法进行初始化，否则，只会在getConnection时再进行初始化。数据源初始化主要逻辑在`DataSource.init()`这个方法，可以概括为以下步骤：
+`DruidDataSource`的初始化时机是可选的，当我们设置`init=true`时，在`createDataSource`时就会调用`DataSource.init()`方法进行初始化，否则，只会在`getConnection`时再进行初始化。数据源初始化主要逻辑在`DataSource.init()`这个方法，可以概括为以下步骤：
 
 1. 加锁
-2. 初始化initStackTrace、id、xxIdSeed、dbTyp、driver、dataSourceStat、connections、evictConnections、keepAliveConnections等属性
+2. 初始化`initStackTrace`、`id`、`xxIdSeed`、`dbTyp`、`driver`、`dataSourceStat`、`connections`、`evictConnections`、`keepAliveConnections`等属性
 3. 初始化过滤器
-4. 校验maxActive、minIdle、initialSize、timeBetweenLogStatsMillis、useGlobalDataSourceStat、maxEvictableIdleTimeMillis、minEvictableIdleTimeMillis、validationQuery等配置是否合法
-5. 初始化ExceptionSorter、ValidConnectionChecker、JdbcDataSourceStat
-6. 创建initialSize数量的连接
-7. 创建logStatsThread、createConnectionThread和destroyConnectionThread
-8. 等待createConnectionThread和destroyConnectionThread线程run后再继续执行
-9. 注册MBean，用于支持JMX
-10. 如果设置了keepAlive，通知createConnectionThread创建连接对象
+4. 校验`maxActive`、`minIdle`、`initialSize`、`timeBetweenLogStatsMillis`、`useGlobalDataSourceStat`、`maxEvictableIdleTimeMillis`、`minEvictableIdleTimeMillis`、`validationQuery`等配置是否合法
+5. 初始化`ExceptionSorter`、`ValidConnectionChecker`、`JdbcDataSourceStat`
+6. 创建`initialSize`数量的连接
+7. 创建`logStatsThread`、`createConnectionThread`和`destroyConnectionThread`
+8. 等待`createConnectionThread`和`destroyConnectionThread`线程run后再继续执行
+9. 注册`MBean`，用于支持JMX
+10. 如果设置了`keepAlive`，通知`createConnectionThread`创建连接对象
 11. 解锁
 
 这个方法差不多200行，考虑篇幅，我删减了部分内容。
 
 ### 加锁和解锁
 
-druid数据源初始化采用的是ReentrantLock，如下：
+druid数据源初始化采用的是`ReentrantLock`，如下：
 
 ```java
         final ReentrantLock lock = this.lock;
@@ -1104,7 +1104,7 @@ druid数据源初始化采用的是ReentrantLock，如下：
 
 ### 初始化属性
 
-这部分内容主要是初始化一些属性，需要注意的一点就是，这里使用了AtomicLongFieldUpdater来进行原子更新，保证写的安全和读的高效，当然，还是cocurrent包的工具。
+这部分内容主要是初始化一些属性，需要注意的一点就是，这里使用了`AtomicLongFieldUpdater`来进行原子更新，保证写的安全和读的高效，当然，还是`cocurrent`包的工具。
 
 ```java
         // 这里使用了AtomicLongFieldUpdater来进行原子更新，保证了写的安全和读的高效
@@ -1184,7 +1184,7 @@ druid数据源初始化采用的是ReentrantLock，如下：
 
 看到下面的代码会发现，我们还可以通过SPI机制来配置过滤器。
 
-使用SPI配置过滤器时需要注意，对应的类需要加上@AutoLoad注解，另外还需要配置`load.spifilter.skip=false`，SPI相关内容可参考我的另一篇博客：[使用SPI解耦你的实现类](https://www.cnblogs.com/ZhangZiSheng001/p/12114744.html)。
+使用SPI配置过滤器时需要注意，对应的类需要加上`@AutoLoad`注解，另外还需要配置`load.spifilter.skip=false`，SPI相关内容可参考我的另一篇博客：[使用SPI解耦你的实现类](https://www.cnblogs.com/ZhangZiSheng001/p/12114744.html)。
 
 在这个方法里，主要就是初始化过滤器的一些属性而已。过滤器的部分，本文不会涉及到太多。
 
@@ -1214,7 +1214,7 @@ druid数据源初始化采用的是ReentrantLock，如下：
 
 ### 初始化ExceptionSorter、ValidConnectionChecker、JdbcDataSourceStat
 
-这里重点关注ExceptionSorter和ValidConnectionChecker这两个类，这里会根据数据库类型进行选择。其中，ValidConnectionChecker用于对连接进行检测。
+这里重点关注`ExceptionSorter`和`ValidConnectionChecker`这两个类，这里会根据数据库类型进行选择。其中，`ValidConnectionChecker`用于对连接进行检测。
 
 ```java
 		// 根据driverClassName初始化ExceptionSorter
@@ -1242,9 +1242,9 @@ druid数据源初始化采用的是ReentrantLock，如下：
 
 ### 创建initialSize数量的连接
 
-这里有两种方式创建连接，一种是异步，一种是同步。但是，根据我们的使用例子，createScheduler为null，所以采用的是同步的方式。
+这里有两种方式创建连接，一种是异步，一种是同步。但是，根据我们的使用例子，`createScheduler`为null，所以采用的是同步的方式。
 
-注意，后面的所有代码也是基于createScheduler为null来分析的。
+注意，后面的所有代码也是基于`createScheduler`为null来分析的。
 
 ```java
 		// 创建初始连接数
@@ -1284,7 +1284,7 @@ druid数据源初始化采用的是ReentrantLock，如下：
 
 ### 等待
 
-这里使用了CountDownLatch，保证当createConnectionThread和destroyConnectionThread开始run时再继续执行。
+这里使用了`CountDownLatch`，保证当`createConnectionThread`和`destroyConnectionThread`开始run时再继续执行。
 
 ```java
 		private final CountDownLatch initedLatch = new CountDownLatch(2);
@@ -1292,7 +1292,7 @@ druid数据源初始化采用的是ReentrantLock，如下：
 		initedLatch.await();
 ```
 
-我们进入到DruidDataSource.CreateConnectionThread.run()，可以看到，一执行run方法就会调用countDown。destroyConnectionThread也是一样，这里就不放进来了。
+我们进入到`DruidDataSource.CreateConnectionThread.run()`，可以看到，一执行run方法就会调用`countDown`。`destroyConnectionThread`也是一样，这里就不放进来了。
 
 ```java
     public class CreateConnectionThread extends Thread {
@@ -1306,7 +1306,7 @@ druid数据源初始化采用的是ReentrantLock，如下：
 
 ### 注册MBean
 
-接下来是注册MBean，会去注册DruidDataSourceStatManager和DruidDataSource，启动我们的程度，通过jconsole就可以看到这两个MBean。JMX相关内容这里就不多扩展了，感兴趣的话可参考我的另一篇博客：[ 如何使用JMX来管理程序？](https://www.cnblogs.com/ZhangZiSheng001/p/12128915.html)
+接下来是注册`MBean`，会去注册`DruidDataSourceStatManager`和`DruidDataSource`，启动我们的程度，通过jconsole就可以看到这两个`MBean`。JMX相关内容这里就不多扩展了，感兴趣的话可参考我的另一篇博客：[ 如何使用JMX来管理程序？](https://www.cnblogs.com/ZhangZiSheng001/p/12128915.html)
 
 ```java
 		// 注册MBean，用于支持JMX
@@ -1315,7 +1315,7 @@ druid数据源初始化采用的是ReentrantLock，如下：
 
 ### 通知createConnectionThread创建连接对象
 
-前面已经讲过，当我们调用`empty.signal()`,会去唤醒处于`empty.await()`状态的CreateConnectionThread。CreateConnectionThread这个线只有在需要创建连接时才运行，否则会一直等待，后面会讲到。
+前面已经讲过，当我们调用`empty.signal()`,会去唤醒处于`empty.await()`状态的`CreateConnectionThread`。`CreateConnectionThread`这个线只有在需要创建连接时才运行，否则会一直等待，后面会讲到。
 
 ```java
 		protected Condition empty;
@@ -1330,7 +1330,7 @@ druid数据源初始化采用的是ReentrantLock，如下：
 
 ### 了解下DruidPooledConnection这个类
 
-用户调用DruidDataSource.getConnection，拿到的对象时DruidPooledConnection，里面封装了DruidConnectionHolder，而这个对象包含了原生的连接对象和我们一开始创建的数据源对象。
+用户调用`DruidDataSource.getConnection`，拿到的对象时`DruidPooledConnection`，里面封装了`DruidConnectionHolder`，而这个对象包含了原生的连接对象和我们一开始创建的数据源对象。
 
 ![DruidPooledConnection的UML图](https://img2018.cnblogs.com/blog/1731892/202001/1731892-20200110140050885-752749510.png)
 
@@ -1339,11 +1339,11 @@ druid数据源初始化采用的是ReentrantLock，如下：
 连接对象的获取过程可以概括为以下步骤：
 
 1. 初始化数据源（如果还没初始化）；
-2. 获得连接对象，如果无可用连接，向createConnectionThread发送signal创建新连接，此时会进入等待；
-3. 如果设置了testOnBorrow，进行testOnBorrow检测，否则，如果设置了testWhileIdle，进行testWhileIdle检测；
-4. 如果设置了removeAbandoned，则会将连接对象放入activeConnections；
-5. 设置defaultAutoCommit，并返回；
-6. 执行filterChain。
+2. 获得连接对象，如果无可用连接，向`createConnectionThread`发送signal创建新连接，此时会进入等待；
+3. 如果设置了`testOnBorrow`，进行`testOnBorrow`检测，否则，如果设置了`testWhileIdle`，进行`testWhileIdle`检测；
+4. 如果设置了`removeAbandoned`，则会将连接对象放入`activeConnections`；
+5. 设置`defaultAutoCommit`，并返回；
+6. 执行`filterChain`。
 
 初始化数据源的前面已经讲过了，这里就直接从第二步开始。
 
@@ -1556,7 +1556,7 @@ druid数据源初始化采用的是ReentrantLock，如下：
 
 ### testOnBorrow或testWhileIdle
 
-进入`DruidDataSource.getConnectionDirect(long)`。该方法会使用到validConnectionChecker来校验连接的有效性。
+进入`DruidDataSource.getConnectionDirect(long)`。该方法会使用到`validConnectionChecker`来校验连接的有效性。
 
 ```java
         // 如果开启了testOnBorrow
@@ -1620,7 +1620,7 @@ druid数据源初始化采用的是ReentrantLock，如下：
 
 ### removeAbandoned
 
-进入`DruidDataSource.getConnectionDirect(long)`，这里不会进行检测，只是将连接对象放入activeConnections，具体泄露连接的检测工作是在DestroyConnectionThread线程中进行。
+进入`DruidDataSource.getConnectionDirect(long)`，这里不会进行检测，只是将连接对象放入`activeConnections`，具体泄露连接的检测工作是在`DestroyConnectionThread`线程中进行。
 
 ```java
         if (removeAbandoned) {
@@ -1653,7 +1653,7 @@ DestroyConnectionThread线程会根据我们设置的timeBetweenEvictionRunsMill
         }
 ```
 
-进入`DruidDataSource.removeAbandoned()`，当连接对象使用时间超过removeAbandonedTimeoutMillis，则会被丢弃掉。
+进入`DruidDataSource.removeAbandoned()`，当连接对象使用时间超过`removeAbandonedTimeoutMillis`，则会被丢弃掉。
 
 ```java
     public int removeAbandoned() {
