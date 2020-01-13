@@ -92,6 +92,12 @@
 2. `druid`的配置参数详解
 3. `druid`主要源码分析
 
+其他连接池的内容也可以参考我的其他博客：
+
+[源码详解系列(四) ------ DBCP2的使用和分析（包括JNDI和JTA支持）](https://www.cnblogs.com/ZhangZiSheng001/p/12003922.html)
+
+[源码详解系列(五) ------ C3P0的使用和分析（包括JNDI）](https://www.cnblogs.com/ZhangZiSheng001/p/12080533.html)
+
 # 使用例子-入门
 
 ## 需求
