@@ -81,7 +81,6 @@
 
 
 
-
 # 简介
 
 `druid`是用于创建和管理连接，利用“池”的方式复用连接减少资源开销，和其他数据源一样，也具有连接数控制、连接可靠性测试、连接泄露控制、缓存语句等功能，另外，`druid`还扩展了监控统计、防御SQL注入等功能。
@@ -225,16 +224,16 @@ maxWait=-1
 
 ```java
 	@Test
-	public void save() {
+	public void save() throws SQLException {
 		// 创建sql
 		String sql = "insert into demo_user values(null,?,?,?,?,?)";
 		Connection connection = null;
 		PreparedStatement statement = null;
 		try {
 			// 获得连接
-			connection = JDBCUtil.getConnection();
+			connection = JDBCUtils.getConnection();
 			// 开启事务设置非自动提交
-			JDBCUtil.startTrasaction();
+			connection.setAutoCommit(false);
 			// 获得Statement对象
 			statement = connection.prepareStatement(sql);
 			// 设置参数
@@ -246,13 +245,10 @@ maxWait=-1
 			// 执行
 			statement.executeUpdate();
 			// 提交事务
-			JDBCUtil.commit();
-		} catch(Exception e) {
-			JDBCUtil.rollback();
-			log.error("保存用户失败", e);
+			connection.commit();
 		} finally {
 			// 释放资源
-			JDBCUtil.release(connection, statement, null);
+			JDBCUtils.release(connection, statement, null);
 		}
 	}
 ```
@@ -1646,7 +1642,7 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
         }
 ```
 
-DestroyConnectionThread线程会根据我们设置的timeBetweenEvictionRunsMillis来进行检验，具体的校验会去运行DestroyTask（DruidDataSource的内部类），这里看下DestroyTask的run方法。
+`DestroyConnectionThread`线程会根据我们设置的`timeBetweenEvictionRunsMillis`来进行检验，具体的校验会去运行`DestroyTask`（`DruidDataSource`的内部类），这里看下`DestroyTask`的`run`方法。
 
 ```java
         public void run() {

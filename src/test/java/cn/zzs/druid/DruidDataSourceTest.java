@@ -6,8 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
 /**
@@ -17,13 +15,12 @@ import org.junit.Test;
  */
 public class DruidDataSourceTest {
 
-	private static final Log log = LogFactory.getLog(DruidDataSourceTest.class);
-
 	/**
 	 * 测试添加用户
+	 * @throws SQLException 
 	 */
 	@Test
-	public void save() {
+	public void save() throws SQLException {
 		// 创建sql
 		String sql = "insert into demo_user values(null,?,?,?,?,?)";
 		Connection connection = null;
@@ -32,7 +29,7 @@ public class DruidDataSourceTest {
 			// 获得连接
 			connection = JDBCUtils.getConnection();
 			// 开启事务设置非自动提交
-			JDBCUtils.startTrasaction();
+			connection.setAutoCommit(false);
 			// 获得Statement对象
 			statement = connection.prepareStatement(sql);
 			// 设置参数
@@ -44,10 +41,7 @@ public class DruidDataSourceTest {
 			// 执行
 			statement.executeUpdate();
 			// 提交事务
-			JDBCUtils.commit();
-		} catch(Exception e) {
-			JDBCUtils.rollback();
-			log.error("保存用户失败", e);
+			connection.commit();
 		} finally {
 			// 释放资源
 			JDBCUtils.release(connection, statement, null);
@@ -56,9 +50,10 @@ public class DruidDataSourceTest {
 
 	/**
 	 * 测试更新用户
+	 * @throws SQLException 
 	 */
 	@Test
-	public void update() {
+	public void update() throws SQLException {
 		// 创建sql
 		String sql = "update demo_user set age = ?,gmt_modified = ? where name = ?";
 		Connection connection = null;
@@ -67,7 +62,7 @@ public class DruidDataSourceTest {
 			// 获得连接
 			connection = JDBCUtils.getConnection();
 			// 开启事务
-			JDBCUtils.startTrasaction();
+			connection.setAutoCommit(false);
 			// 获得Statement对象
 			statement = connection.prepareStatement(sql);
 			// 设置参数
@@ -77,10 +72,7 @@ public class DruidDataSourceTest {
 			// 执行
 			statement.executeUpdate();
 			// 提交事务
-			JDBCUtils.commit();
-		} catch(Exception e) {
-			log.error("异常导致操作回滚", e);
-			JDBCUtils.rollback();
+			connection.commit();
 		} finally {
 			// 释放资源
 			JDBCUtils.release(connection, statement, null);
@@ -89,9 +81,10 @@ public class DruidDataSourceTest {
 
 	/**
 	 * 测试查找用户
+	 * @throws SQLException 
 	 */
 	@Test
-	public void findAll() {
+	public void findAll() throws SQLException {
 		// 创建sql
 		String sql = "select * from demo_user where deleted = false";
 		Connection connection = null;
@@ -110,8 +103,6 @@ public class DruidDataSourceTest {
 				int age = resultSet.getInt(3);
 				System.out.println("用户名：" + name + ",年龄：" + age);
 			}
-		} catch(SQLException e) {
-			log.error("查询用户异常", e);
 		} finally {
 			// 释放资源
 			JDBCUtils.release(connection, statement, resultSet);
@@ -131,7 +122,7 @@ public class DruidDataSourceTest {
 			// 获得连接
 			connection = JDBCUtils.getConnection();
 			// 设置非自动提交
-			JDBCUtils.startTrasaction();
+			connection.setAutoCommit(false);
 			// 获得Statement对象
 			statement = connection.prepareStatement(sql);
 			// 设置参数
@@ -139,20 +130,11 @@ public class DruidDataSourceTest {
 			// 执行
 			statement.executeUpdate();
 			// 提交事务
-			JDBCUtils.commit();
-		} catch(Exception e) {
-			log.error("异常导致操作回滚", e);
-			JDBCUtils.rollback();
+			connection.commit();
 		} finally {
 			// 释放资源
 			JDBCUtils.release(connection, statement, null);
 		}
-	}
-
-	public static void main(String[] args) throws InterruptedException {
-		new DruidDataSourceTest().findAll();
-		Thread.sleep(60 * 60 * 1000);
-
 	}
 
 }
