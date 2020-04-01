@@ -135,35 +135,35 @@
 
 这里引入日志包，主要为了看看连接池的创建过程，不引入不会有影响的。
 ```xml
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- druid -->
-		<dependency>
-		    <groupId>com.alibaba</groupId>
-		    <artifactId>druid</artifactId>
-		    <version>1.1.20</version>
-		</dependency>
-		<!-- mysql驱动 -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.15</version>
-		</dependency>
-		<!-- log -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.2</version>
-		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- druid -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.20</version>
+        </dependency>
+        <!-- mysql驱动 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.15</version>
+        </dependency>
+        <!-- log -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.2</version>
+        </dependency>
 ```
 
 ## 编写druid.properties
@@ -212,10 +212,10 @@ maxWait=-1
 路径：`cn.zzs.druid`
 
 ```java
-		Properties properties = new Properties();
-		InputStream in = JDBCUtils.class.getClassLoader().getResourceAsStream("druid.properties");
-		properties.load(in);
-		DataSource dataSource = DruidDataSourceFactory.createDataSource(properties);
+        Properties properties = new Properties();
+        InputStream in = JDBCUtils.class.getClassLoader().getResourceAsStream("druid.properties");
+        properties.load(in);
+        DataSource dataSource = DruidDataSourceFactory.createDataSource(properties);
 ```
 
 ## 编写测试类
@@ -223,34 +223,34 @@ maxWait=-1
 这里以保存用户为例，路径在test目录下的`cn.zzs.druid`。
 
 ```java
-	@Test
-	public void save() throws SQLException {
-		// 创建sql
-		String sql = "insert into demo_user values(null,?,?,?,?,?)";
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			// 获得连接
-			connection = JDBCUtils.getConnection();
-			// 开启事务设置非自动提交
-			connection.setAutoCommit(false);
-			// 获得Statement对象
-			statement = connection.prepareStatement(sql);
-			// 设置参数
-			statement.setString(1, "zzf003");
-			statement.setInt(2, 18);
-			statement.setDate(3, new Date(System.currentTimeMillis()));
-			statement.setDate(4, new Date(System.currentTimeMillis()));
-			statement.setBoolean(5, false);
-			// 执行
-			statement.executeUpdate();
-			// 提交事务
-			connection.commit();
-		} finally {
-			// 释放资源
-			JDBCUtils.release(connection, statement, null);
-		}
-	}
+    @Test
+    public void save() throws SQLException {
+        // 创建sql
+        String sql = "insert into demo_user values(null,?,?,?,?,?)";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            // 获得连接
+            connection = JDBCUtils.getConnection();
+            // 开启事务设置非自动提交
+            connection.setAutoCommit(false);
+            // 获得Statement对象
+            statement = connection.prepareStatement(sql);
+            // 设置参数
+            statement.setString(1, "zzf003");
+            statement.setInt(2, 18);
+            statement.setDate(3, new Date(System.currentTimeMillis()));
+            statement.setDate(4, new Date(System.currentTimeMillis()));
+            statement.setBoolean(5, false);
+            // 执行
+            statement.executeUpdate();
+            // 提交事务
+            connection.commit();
+        } finally {
+            // 释放资源
+            JDBCUtils.release(connection, statement, null);
+        }
+    }
 ```
 
 # 使用例子-通过`JNDI`获取数据源
@@ -266,24 +266,24 @@ maxWait=-1
 本文在入门例子的基础上增加以下依赖，因为是`web`项目，所以打包方式为`war`：
 
 ```xml
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>javax.servlet.jsp-api</artifactId>
-			<version>2.2.1</version>
-			<scope>provided</scope>
-		</dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>2.2.1</version>
+            <scope>provided</scope>
+        </dependency>
 ```
 
 ## 编写context.xml
@@ -319,8 +319,8 @@ maxWait=-1
 在`web-app`节点下配置资源引用，每个`resource-ref`指向了我们配置好的对象。
 
 ```xml
-	<!-- JNDI数据源 -->
-	<resource-ref>
+    <!-- JNDI数据源 -->
+    <resource-ref>
         <res-ref-name>jdbc/druid-test</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
@@ -336,7 +336,7 @@ maxWait=-1
 ```jsp
 <body>
     <%
-    	String jndiName = "java:comp/env/jdbc/druid-test";
+        String jndiName = "java:comp/env/jdbc/druid-test";
         
         InitialContext ic = new InitialContext();
         // 获取JNDI上的ComboPooledDataSource
@@ -436,9 +436,9 @@ filters=mergeStat
 
 ```java
   public class MergeStatFilter extends StatFilter {
-  	public MergeStatFilter() {
-  		super.setMergeSql(true);
-  	}
+      public MergeStatFilter() {
+          super.setMergeSql(true);
+      }
   }
 ```
 
@@ -505,19 +505,19 @@ http://localhost:8080/druid-demo/druid/index.html
     <servlet-name>DruidStatView</servlet-name>  
     <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>  
     <init-param>  
-	<!-- 允许清空统计数据 -->  
-	<param-name>resetEnable</param-name>  
-	<param-value>true</param-value>  
+    <!-- 允许清空统计数据 -->  
+    <param-name>resetEnable</param-name>  
+    <param-value>true</param-value>  
     </init-param>  
     <init-param>  
-	<!-- 用户名 -->  
-	<param-name>loginUsername</param-name>  
-	<param-value>druid</param-value>  
+    <!-- 用户名 -->  
+    <param-name>loginUsername</param-name>  
+    <param-value>druid</param-value>  
     </init-param>  
     <init-param>  
-	<!-- 密码 -->  
-	<param-name>loginPassword</param-name>  
-	<param-value>druid</param-value>  
+    <!-- 密码 -->  
+    <param-name>loginPassword</param-name>  
+    <param-value>druid</param-value>  
     </init-param>  
 </servlet>  
 <servlet-mapping>  
@@ -534,14 +534,14 @@ http://localhost:8080/druid-demo/druid/index.html
   <servlet>
       <servlet-name>DruidStatView</servlet-name>
       <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
-  	<init-param>
-  		<param-name>allow</param-name>
-  		<param-value>128.242.127.1/24,128.242.128.1</param-value>
-  	</init-param>
-  	<init-param>
-  		<param-name>deny</param-name>
-  		<param-value>128.242.127.4</param-value>
-  	</init-param>
+      <init-param>
+          <param-name>allow</param-name>
+          <param-value>128.242.127.1/24,128.242.128.1</param-value>
+      </init-param>
+      <init-param>
+          <param-name>deny</param-name>
+          <param-value>128.242.127.4</param-value>
+      </init-param>
   </servlet>
 ```
 
@@ -557,10 +557,10 @@ http://localhost:8080/druid-demo/druid/index.html
   <servlet>
       <servlet-name>DruidStatView</servlet-name>
       <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
-  	<init-param>
-  		<param-name>resetEnable</param-name>
-  		<param-value>false</param-value>
-  	</init-param>
+      <init-param>
+          <param-name>resetEnable</param-name>
+          <param-value>false</param-value>
+      </init-param>
   </servlet>
 ```
 
@@ -570,16 +570,16 @@ http://localhost:8080/druid-demo/druid/index.html
 
 ```xml
   <filter>
-  	<filter-name>DruidWebStatFilter</filter-name>
-  	<filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
-  	<init-param>
-  		<param-name>exclusions</param-name>
-  		<param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
-  	</init-param>
+      <filter-name>DruidWebStatFilter</filter-name>
+      <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+      <init-param>
+          <param-name>exclusions</param-name>
+          <param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
+      </init-param>
   </filter>
   <filter-mapping>
-  	<filter-name>DruidWebStatFilter</filter-name>
-  	<url-pattern>/*</url-pattern>
+      <filter-name>DruidWebStatFilter</filter-name>
+      <url-pattern>/*</url-pattern>
   </filter-mapping>
 ```
 
@@ -1085,7 +1085,7 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
 ```java
         final ReentrantLock lock = this.lock;
         try {
-        	// 加锁
+            // 加锁
             lock.lockInterruptibly();
         } catch (InterruptedException e) {
             throw new SQLException("interrupt", e);
@@ -1093,7 +1093,7 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
 
         boolean init = false;
         try {
-        	// do something
+            // do something
         } finally {
             inited = true;
             // 解锁
@@ -1118,20 +1118,20 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
             this.resultSetIdSeedUpdater.addAndGet(this, delta);
             this.transactionIdSeedUpdater.addAndGet(this, delta);
         }
-		
-		// 设置url
+        
+        // 设置url
         if (this.jdbcUrl != null) {
             this.jdbcUrl = this.jdbcUrl.trim();
             // 针对druid自定义的一种url格式，进行解析
-			// jdbc:wrap-jdbc:开头，可设置driver、name、jmx等
+            // jdbc:wrap-jdbc:开头，可设置driver、name、jmx等
             initFromWrapDriverUrl();
         }
-		
-		// 根据url前缀，确定dbType
+        
+        // 根据url前缀，确定dbType
         if (this.dbType == null || this.dbType.length() == 0) {
             this.dbType = JdbcUtils.getDbType(jdbcUrl, null);
         }
-		
+        
         // cacheServerConfiguration，暂时不知道这个参数干嘛用的
         if (JdbcConstants.MYSQL.equals(this.dbType)
                 || JdbcConstants.MARIADB.equals(this.dbType)
@@ -1147,18 +1147,18 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
             }
         }
         
-		// 设置驱动类
+        // 设置驱动类
         if (this.driverClass != null) {
             this.driverClass = driverClass.trim();
         }
-		
+        
         // 如果我们没有配置driverClass
         if (this.driver == null) {
             // 根据url识别对应的driverClass
             if (this.driverClass == null || this.driverClass.isEmpty()) {
                 this.driverClass = JdbcUtils.getDriverClassName(this.jdbcUrl);
             }
-			// MockDriver的情况，这里不讨论
+            // MockDriver的情况，这里不讨论
             if (MockDriver.class.getName().equals(driverClass)) {
                 driver = MockDriver.instance;
             } else {
@@ -1173,7 +1173,7 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
                 this.driverClass = driver.getClass().getName();
             }
         }
-		
+        
         // 用于存放所有连接对象
         connections = new DruidConnectionHolder[maxActive];
         // 用于存放需要丢弃的连接对象
@@ -1190,13 +1190,13 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
 
 在这个方法里，主要就是初始化过滤器的一些属性而已。过滤器的部分，本文不会涉及到太多。
 
-```	java
-		// 初始化filters
-		for (Filter filter : filters) {
-			filter.init(this);
-		}
+```    java
+        // 初始化filters
+        for (Filter filter : filters) {
+            filter.init(this);
+        }
         // 采用SPI机制加载过滤器，这部分过滤器除了放入filters，还会放入autoFilters
-		initFromSPIServiceLoader();
+        initFromSPIServiceLoader();
 ```
 
 ### 校验配置
@@ -1204,14 +1204,14 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
 这里只是简单的校验，不涉及太多复杂的逻辑。
 
 ```java
-		// 校验maxActive、minIdle、initialSize、timeBetweenLogStatsMillis、useGlobalDataSourceStat、maxEvictableIdleTimeMillis、minEvictableIdleTimeMillis等配置是否合法
-		// ·······
+        // 校验maxActive、minIdle、initialSize、timeBetweenLogStatsMillis、useGlobalDataSourceStat、maxEvictableIdleTimeMillis、minEvictableIdleTimeMillis等配置是否合法
+        // ·······
 
-		// 针对oracle和DB2，需要校验validationQuery
-		initCheck();
+        // 针对oracle和DB2，需要校验validationQuery
+        initCheck();
             
-		// 当开启了testOnBorrow/testOnReturn/testWhileIdle，判断是否设置了validationQuery，没有的话会打印错误信息
-		validationQueryCheck();
+        // 当开启了testOnBorrow/testOnReturn/testWhileIdle，判断是否设置了validationQuery，没有的话会打印错误信息
+        validationQueryCheck();
 ```
 
 ### 初始化ExceptionSorter、ValidConnectionChecker、JdbcDataSourceStat
@@ -1219,27 +1219,27 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
 这里重点关注`ExceptionSorter`和`ValidConnectionChecker`这两个类，这里会根据数据库类型进行选择。其中，`ValidConnectionChecker`用于对连接进行检测。
 
 ```java
-		// 根据driverClassName初始化ExceptionSorter
-		initExceptionSorter();
+        // 根据driverClassName初始化ExceptionSorter
+        initExceptionSorter();
             
-		// 根据driverClassName初始化ValidConnectionChecker
-		initValidConnectionChecker();
+        // 根据driverClassName初始化ValidConnectionChecker
+        initValidConnectionChecker();
             
-		// 初始化dataSourceStat
-		// 如果设置了isUseGlobalDataSourceStat为true，则支持公用监控数据
-		if (isUseGlobalDataSourceStat()) {
-			dataSourceStat = JdbcDataSourceStat.getGlobal();
-			if (dataSourceStat == null) {
-				dataSourceStat = new JdbcDataSourceStat("Global", "Global", this.dbType);
-				JdbcDataSourceStat.setGlobal(dataSourceStat);
-			}
-			if (dataSourceStat.getDbType() == null) {
-				dataSourceStat.setDbType(this.dbType);
-			}
-		} else {
-			dataSourceStat = new JdbcDataSourceStat(this.name, this.jdbcUrl, this.dbType, this.connectProperties);
-		}
-		dataSourceStat.setResetStatEnable(this.resetStatEnable);
+        // 初始化dataSourceStat
+        // 如果设置了isUseGlobalDataSourceStat为true，则支持公用监控数据
+        if (isUseGlobalDataSourceStat()) {
+            dataSourceStat = JdbcDataSourceStat.getGlobal();
+            if (dataSourceStat == null) {
+                dataSourceStat = new JdbcDataSourceStat("Global", "Global", this.dbType);
+                JdbcDataSourceStat.setGlobal(dataSourceStat);
+            }
+            if (dataSourceStat.getDbType() == null) {
+                dataSourceStat.setDbType(this.dbType);
+            }
+        } else {
+            dataSourceStat = new JdbcDataSourceStat(this.name, this.jdbcUrl, this.dbType, this.connectProperties);
+        }
+        dataSourceStat.setResetStatEnable(this.resetStatEnable);
 ```
 
 ### 创建initialSize数量的连接
@@ -1249,7 +1249,7 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
 注意，后面的所有代码也是基于`createScheduler`为null来分析的。
 
 ```java
-		// 创建初始连接数
+        // 创建初始连接数
         // 异步创建，createScheduler为null，不进入
         if (createScheduler != null && asyncInit) {
             for (int i = 0; i < initialSize; ++i) {
@@ -1259,9 +1259,9 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
         } else if (!asyncInit) {
             // 创建连接的过程后面再讲
             while (poolingCount < initialSize) {
-            	PhysicalConnectionInfo pyConnectInfo = createPhysicalConnection();
+                PhysicalConnectionInfo pyConnectInfo = createPhysicalConnection();
                 DruidConnectionHolder holder = new DruidConnectionHolder(this, pyConnectInfo);
-            	connections[poolingCount++] = holder;
+                connections[poolingCount++] = holder;
             }
 
             if (poolingCount > 0) {
@@ -1276,7 +1276,7 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
 这里会启动三个线程。
 
 ```java
-		// 启动监控数据记录线程
+        // 启动监控数据记录线程
         createAndLogThread();
         // 启动连接创建线程
         createAndStartCreatorThread();
@@ -1289,9 +1289,9 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
 这里使用了`CountDownLatch`，保证当`createConnectionThread`和`destroyConnectionThread`开始run时再继续执行。
 
 ```java
-		private final CountDownLatch initedLatch = new CountDownLatch(2);
-		// 线程进入等待，等待CreatorThread和DestroyThread执行
-		initedLatch.await();
+        private final CountDownLatch initedLatch = new CountDownLatch(2);
+        // 线程进入等待，等待CreatorThread和DestroyThread执行
+        initedLatch.await();
 ```
 
 我们进入到`DruidDataSource.CreateConnectionThread.run()`，可以看到，一执行run方法就会调用`countDown`。`destroyConnectionThread`也是一样，这里就不放进来了。
@@ -1301,7 +1301,7 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
 
         public void run() {
             initedLatch.countDown();
-			// do something
+            // do something
         }
     }
 ```
@@ -1311,8 +1311,8 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
 接下来是注册`MBean`，会去注册`DruidDataSourceStatManager`和`DruidDataSource`，启动我们的程度，通过jconsole就可以看到这两个`MBean`。JMX相关内容这里就不多扩展了，感兴趣的话可参考我的另一篇博客：[ 如何使用JMX来管理程序？](https://www.cnblogs.com/ZhangZiSheng001/p/12128915.html)
 
 ```java
-		// 注册MBean，用于支持JMX
-		registerMbean();
+        // 注册MBean，用于支持JMX
+        registerMbean();
 ```
 
 ### 通知createConnectionThread创建连接对象
@@ -1320,11 +1320,11 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
 前面已经讲过，当我们调用`empty.signal()`,会去唤醒处于`empty.await()`状态的`CreateConnectionThread`。`CreateConnectionThread`这个线只有在需要创建连接时才运行，否则会一直等待，后面会讲到。
 
 ```java
-		protected Condition empty;
-		if (keepAlive) {
+        protected Condition empty;
+        if (keepAlive) {
             // 这里会去调用empty.signal(),会去唤醒处于empty.await()状态的CreateConnectionThread
-			this.emptySignal();
-		}
+            this.emptySignal();
+        }
 ```
 
 
@@ -1363,53 +1363,53 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
 
         DruidConnectionHolder holder;
 
-		// 加锁
-		try {
-			lock.lockInterruptibly();
-		} catch(InterruptedException e) {
-			connectErrorCountUpdater.incrementAndGet(this);
-			throw new SQLException("interrupt", e);
-		}
+        // 加锁
+        try {
+            lock.lockInterruptibly();
+        } catch(InterruptedException e) {
+            connectErrorCountUpdater.incrementAndGet(this);
+            throw new SQLException("interrupt", e);
+        }
 
-		try {
-			// 判断当前等待线程是否超过maxWaitThreadCount
-			if(maxWaitThreadCount > 0 && notEmptyWaitThreadCount >= maxWaitThreadCount) {
-				connectErrorCountUpdater.incrementAndGet(this);
-				throw new SQLException("maxWaitThreadCount " + maxWaitThreadCount + ", current wait Thread count " + lock.getQueueLength());
-			}
+        try {
+            // 判断当前等待线程是否超过maxWaitThreadCount
+            if(maxWaitThreadCount > 0 && notEmptyWaitThreadCount >= maxWaitThreadCount) {
+                connectErrorCountUpdater.incrementAndGet(this);
+                throw new SQLException("maxWaitThreadCount " + maxWaitThreadCount + ", current wait Thread count " + lock.getQueueLength());
+            }
 
-			// 根据是否设置maxWait选择不同的获取方式，后面选择未设置maxWait的方法来分析
-			if(maxWait > 0) {
-				holder = pollLast(nanos);
-			} else {
-				holder = takeLast();
-			}
-			// activeCount（所有活跃连接数量）+1，并设置峰值
-			if(holder != null) {
-				activeCount++;
-				if(activeCount > activePeak) {
-					activePeak = activeCount;
-					activePeakTime = System.currentTimeMillis();
-				}
-			}
-		} catch(InterruptedException e) {
-			connectErrorCountUpdater.incrementAndGet(this);
-			throw new SQLException(e.getMessage(), e);
-		} catch(SQLException e) {
-			connectErrorCountUpdater.incrementAndGet(this);
-			throw e;
-		} finally {
-			// 解锁
-			lock.unlock();
-		}
-		// 当拿到的对象为空时，抛出异常
+            // 根据是否设置maxWait选择不同的获取方式，后面选择未设置maxWait的方法来分析
+            if(maxWait > 0) {
+                holder = pollLast(nanos);
+            } else {
+                holder = takeLast();
+            }
+            // activeCount（所有活跃连接数量）+1，并设置峰值
+            if(holder != null) {
+                activeCount++;
+                if(activeCount > activePeak) {
+                    activePeak = activeCount;
+                    activePeakTime = System.currentTimeMillis();
+                }
+            }
+        } catch(InterruptedException e) {
+            connectErrorCountUpdater.incrementAndGet(this);
+            throw new SQLException(e.getMessage(), e);
+        } catch(SQLException e) {
+            connectErrorCountUpdater.incrementAndGet(this);
+            throw e;
+        } finally {
+            // 解锁
+            lock.unlock();
+        }
+        // 当拿到的对象为空时，抛出异常
         if (holder == null) {
             // ······
         }
-		
+        
         // 连接对象的useCount(使用次数)+1
         holder.incrementUseCount();
-		
+        
         // 包装下后返回
         DruidPooledConnection poolalbeConnection = new DruidPooledConnection(holder);
         return poolalbeConnection;
@@ -1425,11 +1425,11 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
             while (poolingCount == 0) {
                 // 向CreateConnectionThread发送signal，通知创建连接对象
                 emptySignal(); // send signal to CreateThread create connection
-				// 快速失败
+                // 快速失败
                 if (failFast && isFailContinuous()) {
                     throw new DataSourceNotAvailableException(createError);
                 }
-				// notEmptyWaitThreadCount（等待连接对象的线程数）+1，并设置峰值
+                // notEmptyWaitThreadCount（等待连接对象的线程数）+1，并设置峰值
                 notEmptyWaitThreadCount++;
                 if (notEmptyWaitThreadCount > notEmptyWaitThreadPeak) {
                     notEmptyWaitThreadPeak = notEmptyWaitThreadCount;
@@ -1451,7 +1451,7 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
             notEmptySignalCount++;
             throw ie;
         }
-		// poolingCount(空闲连接)-1
+        // poolingCount(空闲连接)-1
         decrementPoolingCount();
         // 获取数组中最后一个连接对象
         DruidConnectionHolder last = connections[poolingCount];
@@ -1480,7 +1480,7 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
             } catch (InterruptedException e2) {
                 break;
             }
-			// 丢弃数量discardCount
+            // 丢弃数量discardCount
             long discardCount = DruidDataSource.this.discardCount;
             boolean discardChanged = discardCount - lastDiscardCount > 0;
             lastDiscardCount = discardCount;
@@ -1544,11 +1544,11 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
                 setFailContinuous(true);
                 break;
             }
-			// 如果为空，重新进入循环体
+            // 如果为空，重新进入循环体
             if (connection == null) {
                 continue;
             }
-			// 将连接对象包装为DruidConnectionHolder，并放入connections数组中
+            // 将连接对象包装为DruidConnectionHolder，并放入connections数组中
             // 注意，该方法会去调用notEmpty.signal()，即会去唤醒正在等待获取连接的线程
             boolean result = put(connection);
 
@@ -1562,7 +1562,7 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
 
 ```java
         // 如果开启了testOnBorrow
-		if (testOnBorrow) {
+        if (testOnBorrow) {
             // 这里会去调用validConnectionChecker的isValidConnection方法来校验，validConnectionChecker不存在的话，则以普通JDBC方式校验
             boolean validate = testConnectionInternal(poolableConnection.holder, poolableConnection.conn);
             if (!validate) {
@@ -1593,15 +1593,15 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
                 if (lastKeepTimeMillis > lastActiveTimeMillis) {
                     lastActiveTimeMillis = lastKeepTimeMillis;
                 }
-				// 计算连接对象空闲时长
+                // 计算连接对象空闲时长
                 long idleMillis = currentTimeMillis - lastActiveTimeMillis;
 
                 long timeBetweenEvictionRunsMillis = this.timeBetweenEvictionRunsMillis;
-				// 空闲检测周期
+                // 空闲检测周期
                 if (timeBetweenEvictionRunsMillis <= 0) {
                     timeBetweenEvictionRunsMillis = DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS;
                 }
-				// 当前连接空闲时长大于空间检测周期时，进入检测
+                // 当前连接空闲时长大于空间检测周期时，进入检测
                 if (idleMillis >= timeBetweenEvictionRunsMillis
                         || idleMillis < 0 // unexcepted branch
                         ) {
@@ -1648,7 +1648,7 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
         public void run() {
             // 检测空闲连接的phyTimeoutMillis、idleMillis是否超过指定要求
             shrink(true, keepAlive);
-			// 这里会去调用DruidDataSource.removeAbandoned()进行检测
+            // 这里会去调用DruidDataSource.removeAbandoned()进行检测
             if (isRemoveAbandoned()) {
                 removeAbandoned();
             }
@@ -1664,20 +1664,20 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
         long currrentNanos = System.nanoTime();
 
         List<DruidPooledConnection> abandonedList = new ArrayList<DruidPooledConnection>();
-		// 加锁
+        // 加锁
         activeConnectionLock.lock();
         try {
             Iterator<DruidPooledConnection> iter = activeConnections.keySet().iterator();
-			// 遍历借出的连接
+            // 遍历借出的连接
             for (; iter.hasNext();) {
                 DruidPooledConnection pooledConnection = iter.next();
 
                 if (pooledConnection.isRunning()) {
                     continue;
                 }
-				// 计算连接对象使用时间
+                // 计算连接对象使用时间
                 long timeMillis = (currrentNanos - pooledConnection.getConnectedTimeNano()) / (1000 * 1000);
-				// 如果超过设置的丢弃超时时间，则加入abandonedList
+                // 如果超过设置的丢弃超时时间，则加入abandonedList
                 if (timeMillis >= removeAbandonedTimeoutMillis) {
                     iter.remove();
                     pooledConnection.setTraceEnable(false);
@@ -1688,7 +1688,7 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
             // 解锁
             activeConnectionLock.unlock();
         }
-		// 遍历需要丢弃的连接对象
+        // 遍历需要丢弃的连接对象
         if (abandonedList.size() > 0) {
             for (DruidPooledConnection pooledConnection : abandonedList) {
                 final ReentrantLock lock = pooledConnection.lock;
@@ -1703,7 +1703,7 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
                     // 解锁
                     lock.unlock();
                 }
-				// 关闭连接
+                // 关闭连接
                 JdbcUtils.close(pooledConnection);
                 pooledConnection.abandond();
                 removeAbandonedCount++;
@@ -1723,7 +1723,7 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
     public DruidPooledConnection getConnection(long maxWaitMillis) throws SQLException {
         // 初始化数据源（如果还没初始化）
         init();
-		// 如果设置了过滤器，会先执行每个过滤器的方法
+        // 如果设置了过滤器，会先执行每个过滤器的方法
         if (filters.size() > 0) {
             FilterChainImpl filterChain = new FilterChainImpl(this);
             // 这里会去递归调用过滤器的方法
@@ -1746,7 +1746,7 @@ druid数据源初始化采用的是`ReentrantLock`，如下：
             DruidPooledConnection conn = getFilters().get(pos++).dataSource_getConnection(this, dataSource, maxWaitMillis);
             return conn;
         }
-		// 当访问到最后一个过滤器时，才会去创建连接
+        // 当访问到最后一个过滤器时，才会去创建连接
         return dataSource.getConnectionDirect(maxWaitMillis);
     }
 ```
