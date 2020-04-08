@@ -27,8 +27,6 @@ public class JDBCUtils {
 
     private static ThreadLocal<Connection> tl = new ThreadLocal<>();
 
-    private static final Object obj = new Object();
-
     private static final Log log = LogFactory.getLog(JDBCUtils.class);
 
     static {
@@ -47,12 +45,8 @@ public class JDBCUtils {
         Connection connection = tl.get();
         // 判断为空的话，创建连接并绑定到当前线程
         if(connection == null) {
-            synchronized(obj) {
-                if((connection = tl.get()) == null) {
-                    connection = createConnection();
-                    tl.set(connection);
-                }
-            }
+            connection = createConnection();
+            tl.set(connection);
         }
         return connection;
     }
@@ -81,7 +75,6 @@ public class JDBCUtils {
                 log.error("关闭Statement对象异常", e);
             }
         }
-        // 注意：这里不关闭连接
         if(conn != null) {
             try {
                 conn.close();
@@ -110,9 +103,6 @@ public class JDBCUtils {
      * @throws SQLException 
      */
     private static Connection createConnection() throws SQLException {
-        if(dataSource == null) {
-            throw new RuntimeException("创建数据源失败");
-        }
         Connection conn = null;
         // 获得连接
         conn = dataSource.getConnection();
@@ -132,7 +122,7 @@ public class JDBCUtils {
             properties.load(in);
             dataSource = DruidDataSourceFactory.createDataSource(properties);
         } catch(Exception e) {
-            log.error("创建数据源失败", e);
+            throw new RuntimeException("创建数据源失败", e);
         }
     }
 }
